@@ -1,0 +1,13 @@
+.photo-grid__item {
+  background-color: #fff;
+  min-height: 361px;
+  min-width: 282px;
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 700px) {
+  .photo-grid__item {
+    min-width: 0;
+    min-height: 0;
+  }
+}

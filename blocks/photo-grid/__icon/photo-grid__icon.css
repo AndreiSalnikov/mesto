@@ -1,0 +1,11 @@
+.photo-grid__icon {
+  min-width: 22px;
+  max-height: 19px;
+  transition: opacity;
+}
+
+.photo-grid__icon:hover {
+  cursor: pointer;
+  transition: opacity .3s ease-out;
+  opacity: 0.5;
+}

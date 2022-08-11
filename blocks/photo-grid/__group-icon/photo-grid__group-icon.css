@@ -1,0 +1,14 @@
+.photo-grid__group-icon {
+  display: flex;
+  max-width: 246px;
+  max-height: 23px;
+  justify-content: space-between;
+  margin: 25px 15px 31px 21px;
+  align-items: baseline;
+}
+
+@media screen and (max-width: 924px) {
+  .photo-grid__group-icon {
+  max-width: none;
+  }
+}
