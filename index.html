@@ -4,86 +4,84 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./pages/index.css">
-  <title>Mesto</title>
+  <title>Место</title>
 </head>
 <body class="page-root">
-      <div class="popup">
-      <form class="popup__container">
-        <button class="popup__close-button"></button>
-        <div class="popup__main">
-          <p class="popup__title">Редактировать профиль</p>
-          <input type="text" name="nameInput" class="popup__info popupName">
-          <input type="text" name="jobInput" class="popup__info popupJob">
-          <button class="popup__save-button">Сохранить</button>
-        </div>
+  <div class="popup">
+    <div class="popup__container">
+      <button class="popup__close-button"></button>
+      <h3 class="popup__title">Редактировать профиль</h3>
+      <form name="edit-form" class="popup__form">
+        <input type="text" name="nameInput" class="popup__info popup__info_text_name">
+        <input type="text" name="jobInput" class="popup__info popup__info_text_job">
+        <button type="submit" class="popup__save-button">Сохранить</button>
       </form>
     </div>
+  </div>
   <header class="header">
     <img src="./images/Logo.svg" class="header__logo" alt="логотип страницы">
   </header>
   <main>
     <section class="profile">
       <div class="profile__left-group">
-        <div class="profile__avatar"></div>
+        <img src="./images/avatar.png" alt="изображение профиля" class="profile__avatar">
         <div class="profile__info">
-          <div class="profile__title-button">
             <h1 class="profile__title">Жак-Ив Кусто</h1>
-            <button type="submit" id="submit" class="profile__edit-button"></button>
-          </div>
+            <button type="button" aria-label="редактировать профиль" class="profile__edit-button"></button>
           <p class="profile__subtitle">Исследователь океана</p>
         </div>
       </div>
-      <button class="profile__add-button"></button>
+      <button type="button" aria-label="загрузить фото" class="profile__add-button"></button>
     </section>
     <section class="photo-grid">
-      <div class="photo-grid__item">
-        <img src="./images/photo-grid__img/1.jpg" alt="карачаевск" class="photo-grid__img">
-        <div class="photo-grid__group-icon">
-          <h2 class="photo-grid__text">Карачаевск</h2>
-          <img src="./images/love-icon.svg" alt="сердце" class="photo-grid__icon photo-grid__icon_active">
+      <article class="item">
+        <img src="./images/photo-grid__img/1.jpg" alt="карачаевск" class="item__img">
+        <div class="item__group-icon">
+          <h2 class="item__text">Карачаевск</h2>
+          <button type="button" aria-label="нравится" class="item__icon"></button>
         </div>
-      </div>
-      <div class="photo-grid__item">
-        <img src="./images/photo-grid__img/2.jpg" alt="гора эльбрус" class="photo-grid__img ">
-        <div class="photo-grid__group-icon">
-          <h2 class="photo-grid__text">Гора Эльбрус</h2>
-          <img src="./images/love-icon.svg" alt="сердце" class="photo-grid__icon photo-grid__icon_active">
+      </article>
+      <article class="item">
+        <img src="./images/photo-grid__img/2.jpg" alt="гора эльбрус" class="item__img">
+        <div class="item__group-icon">
+          <h2 class="item__text">Гора Эльбрус</h2>
+          <button type="button" aria-label="нравится" class="item__icon"></button>
         </div>
-      </div>
-      <div class="photo-grid__item">
-        <img src="./images/photo-grid__img/3.jpg" alt="домбай" class="photo-grid__img">
-        <div class="photo-grid__group-icon">
-          <h2 class="photo-grid__text">Домбай</h2>
-          <img src="./images/love-icon.svg" alt="сердце" class="photo-grid__icon photo-grid__icon_active">
+      </article>
+      <article class="item">
+        <img src="./images/photo-grid__img/3.jpg" alt="домбай" class="item__img">
+        <div class="item__group-icon">
+          <h2 class="item__text">Домбай</h2>
+          <button type="button" aria-label="нравится" class="item__icon"></button>
         </div>
-      </div>
-      <div class="photo-grid__item">
-        <img src="./images/photo-grid__img/3.jpg" alt="гора эльбрус" class="photo-grid__img">
-        <div class="photo-grid__group-icon">
-          <h2 class="photo-grid__text">Гора Эльбрус</h2>
-          <img src="./images/love-icon.svg" alt="сердце" class="photo-grid__icon photo-grid__icon_active">
+      </article>
+      <article class="item">
+        <img src="./images/photo-grid__img/3.jpg" alt="гора эльбрус" class="item__img">
+        <div class="item__group-icon">
+          <h2 class="item__text">Гора Эльбрус</h2>
+          <button type="button" aria-label="нравится" class="item__icon"></button>
         </div>
-      </div>
-      <div class="photo-grid__item">
-        <img src="./images/photo-grid__img/1.jpg" alt="домбай" class="photo-grid__img">
-        <div class="photo-grid__group-icon">
-          <h2 class="photo-grid__text">Домбай</h2>
-          <img src="./images/love-icon.svg" alt="сердце" class="photo-grid__icon photo-grid__icon_active">
+      </article>
+      <article class="item">
+        <img src="./images/photo-grid__img/1.jpg" alt="домбай" class="item__img">
+        <div class="item__group-icon">
+          <h2 class="item__text">Домбай</h2>
+          <button type="button" aria-label="нравится" class="item__icon"></button>
         </div>
-      </div>
-      <div class="photo-grid__item">
-        <img src="./images/photo-grid__img/2.jpg" alt="карачаево-ч..." class="photo-grid__img">
-        <div class="photo-grid__group-icon">
-          <h2 class="photo-grid__text">Карачаево-Черкесия</h2>
-          <img src="./images/love-icon.svg" alt="сердце" class="photo-grid__icon photo-grid__icon_active">
+      </article>
+      <article class="item">
+        <img src="./images/photo-grid__img/2.jpg" alt="карачаево-ч..." class="item__img">
+        <div class="item__group-icon">
+          <h2 class="item__text">Карачаево-Черкесия</h2>
+          <button type="button" aria-label="нравится" class="item__icon"></button>
         </div>
-      </div>
+      </article>
     </section>
   </main>
     <!-- Footer -->
   <footer class="footer">
     <p class="footer__copyright">© 2020 Mesto Russia</p>
   </footer>
-  <script src="./scripts/pop-up.js"></script>
+  <script src="./scripts/index.js"></script>
 </body>
 </html>
