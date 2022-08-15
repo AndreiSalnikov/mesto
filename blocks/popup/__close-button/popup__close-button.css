@@ -10,9 +10,10 @@
   min-width: 32px;
   min-height: 32px;
   transition: opacity .3s ease-out;
+  background-size: cover;
 }
 
-@media screen and (max-width: 513px) {
+@media screen and (max-width: 560px) {
   .popup__close-button {
     min-width: 20px;
     min-height: 20px;

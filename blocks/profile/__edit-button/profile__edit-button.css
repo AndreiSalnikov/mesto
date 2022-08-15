@@ -11,12 +11,12 @@
   background-size: 10px;
 }
 
-@media screen and (max-width:  370px) {
+@media screen and (max-width:  400px) {
   .profile__edit-button {
-  min-width: 17px;
-  min-height: 17px;
-  max-width: 17px;
-  max-height: 17px;
+  min-width: 18px;
+  min-height: 18px;
+  max-width: 18px;
+  max-height: 18px;
   background-size: 7.5px;
   }
 }

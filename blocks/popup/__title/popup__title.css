@@ -6,7 +6,7 @@
   margin: 34px 36px 48px;
 }
 
-@media screen and (max-width: 513px) {
+@media screen and (max-width: 560px) {
   .popup__title {
     margin: 25px 0 75px 22px;
     font-size: 18px;
