@@ -7,9 +7,26 @@
   <title>Место</title>
 </head>
 <body class="page-root">
-  <div class="popup">
+<!--  <template class="popup" id="popupEditProfile">
+
+  </template>
+  <template class="popup" id="popupAddImage">
+
+  </template>
+  <template class="popup" id="popupShowImg">
+
+  </template>-->
+<!--Переделать на темплейт и создавать через js?-->
+  <div class="popup" id="popupShowImg">
+  <figure class="popup__figure">
+    <button class="popup__close-button"></button>
+    <img class="popup__img" alt="">
+    <figcaption class="popup__figcaption"></figcaption>
+  </figure>
+  </div>
+  <div class="popup" id="popupEditProfile">
     <div class="popup__container">
-      <button type="button" class="popup__close-button"></button>
+      <button type="button" id="close-button" class="popup__close-button"></button>
       <h3 class="popup__title">Редактировать профиль</h3>
       <form name="edit-form" class="popup__form">
         <input type="text" name="nameInput" class="popup__info popup__info_text_name">
@@ -33,50 +50,8 @@
       </div>
       <button type="button" aria-label="загрузить фото" class="profile__add-button"></button>
     </section>
-    <section class="photo-grid">
-      <article class="item">
-        <img src="./images/photo-grid__img/1.jpg" alt="карачаевск" class="item__img">
-        <div class="item__group-icon">
-          <h2 class="item__text">Карачаевск</h2>
-          <button type="button" aria-label="нравится" class="item__icon"></button>
-        </div>
-      </article>
-      <article class="item">
-        <img src="./images/photo-grid__img/2.jpg" alt="гора эльбрус" class="item__img">
-        <div class="item__group-icon">
-          <h2 class="item__text">Гора Эльбрус</h2>
-          <button type="button" aria-label="нравится" class="item__icon"></button>
-        </div>
-      </article>
-      <article class="item">
-        <img src="./images/photo-grid__img/3.jpg" alt="домбай" class="item__img">
-        <div class="item__group-icon">
-          <h2 class="item__text">Домбай</h2>
-          <button type="button" aria-label="нравится" class="item__icon"></button>
-        </div>
-      </article>
-      <article class="item">
-        <img src="./images/photo-grid__img/3.jpg" alt="гора эльбрус" class="item__img">
-        <div class="item__group-icon">
-          <h2 class="item__text">Гора Эльбрус</h2>
-          <button type="button" aria-label="нравится" class="item__icon"></button>
-        </div>
-      </article>
-      <article class="item">
-        <img src="./images/photo-grid__img/1.jpg" alt="домбай" class="item__img">
-        <div class="item__group-icon">
-          <h2 class="item__text">Домбай</h2>
-          <button type="button" aria-label="нравится" class="item__icon"></button>
-        </div>
-      </article>
-      <article class="item">
-        <img src="./images/photo-grid__img/2.jpg" alt="карачаево-ч..." class="item__img">
-        <div class="item__group-icon">
-          <h2 class="item__text">Карачаево-Черкесия</h2>
-          <button type="button" aria-label="нравится" class="item__icon"></button>
-        </div>
-      </article>
-    </section>
+    <template class="photo-grid">
+    </template>
   </main>
     <!-- Footer -->
   <footer class="footer">
