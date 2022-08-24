@@ -7,32 +7,33 @@
   <title>Место</title>
 </head>
 <body class="page-root">
-<!--  <template class="popup" id="popupEditProfile">
-
-  </template>
-  <template class="popup" id="popupAddImage">
-
-  </template>
-  <template class="popup" id="popupShowImg">
-
-  </template>-->
-<!--Переделать на темплейт и создавать через js?-->
   <div class="popup" id="popupShowImg">
   <figure class="popup__figure">
-    <button class="popup__close-button"></button>
-    <img class="popup__img" alt="">
+    <button type="button" class="popup__close-button" id="closeButton-popupImg"></button>
+    <img class="popup__img">
     <figcaption class="popup__figcaption"></figcaption>
   </figure>
   </div>
   <div class="popup" id="popupEditProfile">
     <div class="popup__container">
-      <button type="button" id="close-button" class="popup__close-button"></button>
+      <button type="button" id="closeButton-EditProfile" class="popup__close-button"></button>
       <h3 class="popup__title">Редактировать профиль</h3>
-      <form name="edit-form" class="popup__form">
-        <input type="text" name="nameInput" class="popup__info popup__info_text_name">
-        <input type="text" name="jobInput" class="popup__info popup__info_text_job">
+      <form name="edit-form" id="popupEditForm" class="popup__form">
+        <input type="text" name="nameInput" placeholder="имя" class="popup__info popup__info_text_name">
+        <input type="text" name="jobInput" placeholder="профессия" class="popup__info popup__info_text_job">
         <button type="submit" class="popup__save-button">Сохранить</button>
       </form>
+    </div>
+  </div>
+  <div class="popup" id="popupAddCard">
+   <div class="popup__container">
+     <button type="button" id="closeButton-AddCard" class="popup__close-button"></button>
+     <h3 class="popup__title">Новое место</h3>
+     <form name="edit-form" id="popupAddForm" class="popup__form">
+       <input type="text" name="nameInput" placeholder="Название" class="popup__info popup__info_text_title">
+       <input type="text" name="jobInput" placeholder="Ссылка на картинку" class="popup__info popup__info_text_link">
+       <button type="submit" class="popup__save-button">Добавить</button>
+     </form>
     </div>
   </div>
   <header class="header">
@@ -50,13 +51,26 @@
       </div>
       <button type="button" aria-label="загрузить фото" class="profile__add-button"></button>
     </section>
-    <template class="photo-grid">
+    <section class="photo-grid">
+
+    </section>
+    <template id="photoGrid">
+      <article class="item">
+        <button class="item__delete-img" id="trash"></button>
+        <img id="photoGridImg" class="item__img">
+        <div class="item__group-icon">
+          <h2 class="item__text"></h2>
+          <button class="item__icon" id="like"></button>
+        </div>
+      </article>
     </template>
+
   </main>
     <!-- Footer -->
   <footer class="footer">
     <p class="footer__copyright">© 2020 Mesto Russia</p>
   </footer>
+  <script src="./scripts/constants.js"></script>
   <script src="./scripts/index.js"></script>
 </body>
 </html>
