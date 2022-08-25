@@ -19,8 +19,8 @@
       <button type="button" id="closeButton-EditProfile" class="popup__close-button"></button>
       <h3 class="popup__title">Редактировать профиль</h3>
       <form name="edit-form" id="popupEditForm" class="popup__form">
-        <input type="text" name="nameInput" placeholder="имя" class="popup__info popup__info_text_name">
-        <input type="text" name="jobInput" placeholder="профессия" class="popup__info popup__info_text_job">
+        <input type="text" name="nameInput" placeholder="имя" class="popup__info popup__info_text_name" required>
+        <input type="text" name="jobInput" placeholder="профессия" class="popup__info popup__info_text_job" required>
         <button type="submit" class="popup__save-button">Сохранить</button>
       </form>
     </div>
@@ -30,8 +30,8 @@
      <button type="button" id="closeButton-AddCard" class="popup__close-button"></button>
      <h3 class="popup__title">Новое место</h3>
      <form name="edit-form" id="popupAddForm" class="popup__form">
-       <input type="text" name="nameInput" placeholder="Название" class="popup__info popup__info_text_title">
-       <input type="text" name="jobInput" placeholder="Ссылка на картинку" class="popup__info popup__info_text_link">
+       <input type="text" name="nameInput" placeholder="Название" class="popup__info popup__info_text_title" required>
+       <input type="text" name="jobInput" placeholder="Ссылка на картинку" class="popup__info popup__info_text_link" required>
        <button type="submit" class="popup__save-button">Добавить</button>
      </form>
     </div>
@@ -44,15 +44,14 @@
       <div class="profile__left-group">
         <img src="./images/avatar.png" alt="изображение профиля" class="profile__avatar">
         <div class="profile__info">
-            <h1 class="profile__title">Жак-Ив Кусто</h1>
-            <button type="button" aria-label="редактировать профиль" class="profile__edit-button"></button>
+          <h1 class="profile__title">Жак-Ив Кусто</h1>
+          <button type="button" aria-label="редактировать профиль" class="profile__edit-button"></button>
           <p class="profile__subtitle">Исследователь океана</p>
         </div>
       </div>
       <button type="button" aria-label="загрузить фото" class="profile__add-button"></button>
     </section>
     <section class="photo-grid">
-
     </section>
     <template id="photoGrid">
       <article class="item">
@@ -64,7 +63,6 @@
         </div>
       </article>
     </template>
-
   </main>
     <!-- Footer -->
   <footer class="footer">
