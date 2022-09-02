@@ -1,0 +1,8 @@
+.popup__input_error_visible {
+  opacity: 1;
+  margin: 0 0 13px 36px;
+}
+
+.popup__input_error_visible:last-of-type {
+  margin: 0 0 31px 36px;
+}

@@ -44,8 +44,7 @@ function saveProfInf(name, job, event) {
 function popupAddImg(name, link, event) {
   event.preventDefault();
   renderCard({
-    link: name.value,
-    name: link.value,
+    link: name.value, name: link.value,
   });
   popupClose(popupEditAdd);
   popupAddForm.reset();
@@ -71,28 +70,61 @@ function eventListeners(clone) {
   });
 }
 
+const ClosePopupOverlay = (event, window) => {
+  if (event.target.id === popupImg.id || event.target.id === popupEditProfile.id || event.target.id === popupEditAdd.id) popupClose(window);
+}
+
+const ClosePopupEsc = (event, modalWindow) => {
+  if (event.key === "Escape") {
+    popupClose(modalWindow);
+    modalWindow.removeEventListener("keydown", ClosePopupEsc);
+  }
+}
+
 function popupOpen(modalWindow) {
   if (modalWindow === popupEditProfile) {
     popupName.value = profileTitle.textContent;
     popupJob.value = profileSubtitle.textContent;
   }
+
+  enableValidation({
+    formSelector: '.popup__form',
+    inputSelector: '.popup__info',
+    submitButtonSelector: '.popup__save-button',
+    inactiveButtonClass: 'popup__save-button_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__input_error_visible'
+  });
   modalWindow.classList.add("popup_opened");
+  document.addEventListener("keydown", () => ClosePopupEsc(event, modalWindow));
+  modalWindow.addEventListener("click", () => ClosePopupOverlay(event, modalWindow));
 }
 
 function popupClose(modalWindow) {
+  resetValidation();
+  popupAddForm.reset();
   modalWindow.classList.remove("popup_opened");
+}
+
+const resetValidation = () => {
+  const allSpan = document.querySelectorAll(".popup__input");
+  allSpan.forEach((element) => {
+    element.classList.remove("popup__input_error_visible");
+    element.textContent = '';
+  })
+  const allInputs = document.querySelectorAll(".popup__info");
+  allInputs.forEach((element) => {
+    element.classList.remove("popup__input_type_error");
+  })
 }
 
 editButton.addEventListener("click", () => popupOpen(popupEditProfile));
 addButton.addEventListener("click", () => popupOpen(popupEditAdd));
-closeButtonProfile.addEventListener("click", () =>
-  popupClose(popupEditProfile)
-);
+
+closeButtonProfile.addEventListener("click", () => popupClose(popupEditProfile));
 closeButtonPopup.addEventListener("click", () => popupClose(popupImg));
 closeButtonAddImg.addEventListener("click", () => popupClose(popupEditAdd));
-popupForm.addEventListener("submit", () =>
-  saveProfInf(popupName, popupJob, event)
-);
-popupAddForm.addEventListener("submit", () =>
-  popupAddImg(popupLinkImg, popupTitleImg, event)
-);
+
+popupForm.addEventListener("submit", () => saveProfInf(popupName, popupJob, event));
+popupAddForm.addEventListener("submit", () => popupAddImg(popupLinkImg, popupTitleImg, event));
+
