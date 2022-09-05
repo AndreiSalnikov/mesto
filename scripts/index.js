@@ -16,15 +16,18 @@ const template = document.querySelector("#photoGrid");
 const closeButtonProfile = document.querySelector("#closeButton-EditProfile");
 const closeButtonPopup = document.querySelector("#closeButton-popupImg");
 const closeButtonAddImg = document.querySelector("#closeButton-AddCard");
-
+const figcaption = document.querySelector("figcaption");
+const imgPopup = document.querySelector(".popup__img");
+const submitAddButton = document.querySelector("#submitAddButton");
+const submitEditButton = document.querySelector("#submitEditButton");
 function createCard(src, title) {
-  const templateImg = template.content.querySelector(".item__img");
-  const templateText = template.content.querySelector(".item__text");
+  const clone = template.content.cloneNode(true);
+  const templateImg = clone.querySelector(".item__img");
+  const templateText = clone.querySelector(".item__text");
   templateImg.src = src;
   templateImg.alt = title;
   templateText.textContent = title;
-  const clone = template.content.cloneNode(true);
-  eventListeners(clone);
+  eventListeners(clone, src, title);
   return clone;
 }
 
@@ -34,23 +37,27 @@ function renderCard(card) {
   photoGrid.prepend(createCard(card.link, card.name));
 }
 
-function saveProfInf(name, job, event) {
-  event.preventDefault();
+function saveProfInf(name, job) {
   profileTitle.textContent = name.value;
   profileSubtitle.textContent = job.value;
-  popupClose(popupEditProfile);
+  closePopup(popupEditProfile);
 }
 
-function popupAddImg(name, link, event) {
-  event.preventDefault();
+const offButton = (button) => {
+  button.classList.add('popup__save-button_disabled');
+  button.disabled = true;
+}
+
+function addPopupImg(name, link) {
   renderCard({
     link: name.value, name: link.value,
   });
-  popupClose(popupEditAdd);
+  offButton(submitAddButton);
+  closePopup(popupEditAdd);
   popupAddForm.reset();
 }
 
-function eventListeners(clone) {
+function eventListeners(clone, src, title) {
   clone.querySelector(".item__icon").addEventListener("click", (e) => {
     e.target.classList.toggle("item__icon_active");
   });
@@ -58,73 +65,74 @@ function eventListeners(clone) {
     e.target.closest(".item").remove();
   });
   clone.querySelector(".item__img").addEventListener("click", (e) => {
-    const elem = e.target.closest("article");
-    const src = e.target.src;
-    const figcaption = document.querySelector("figcaption");
-    const txt = elem.querySelector("h2").textContent;
-    const imgPopup = document.querySelector(".popup__img");
     imgPopup.setAttribute("src", src);
-    imgPopup.setAttribute("alt", txt);
-    figcaption.textContent = txt;
-    popupOpen(popupImg);
+    imgPopup.setAttribute("alt", title);
+    figcaption.textContent = title;
+    openPopup(popupImg);
   });
 }
 
-const ClosePopupOverlay = (event, window) => {
-  if (event.target.id === popupImg.id || event.target.id === popupEditProfile.id || event.target.id === popupEditAdd.id) popupClose(window);
+const closePopupOverlay = (event) => {
+  if (event.target.id === popupImg.id || event.target.id === popupEditProfile.id || event.target.id === popupEditAdd.id) {
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup);
+  }
 }
 
-const ClosePopupEsc = (event, modalWindow) => {
+const closePopupEsc = (event) => {
   if (event.key === "Escape") {
-    popupClose(modalWindow);
-    modalWindow.removeEventListener("keydown", ClosePopupEsc);
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup);
   }
 }
 
-function popupOpen(modalWindow) {
-  if (modalWindow === popupEditProfile) {
-    popupName.value = profileTitle.textContent;
-    popupJob.value = profileSubtitle.textContent;
-  }
-
-  enableValidation({
-    formSelector: '.popup__form',
-    inputSelector: '.popup__info',
-    submitButtonSelector: '.popup__save-button',
-    inactiveButtonClass: 'popup__save-button_disabled',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__input_error_visible'
-  });
-  modalWindow.classList.add("popup_opened");
-  document.addEventListener("keydown", () => ClosePopupEsc(event, modalWindow));
-  modalWindow.addEventListener("click", () => ClosePopupOverlay(event, modalWindow));
+const openProfilePopup = (modalWindow) => {
+  popupName.value = profileTitle.textContent;
+  popupJob.value = profileSubtitle.textContent;
+  resetValidation(modalWindow);
+  openPopup(modalWindow);
 }
 
-function popupClose(modalWindow) {
-  resetValidation();
+const openAddPopup = (modalWindow) => {
   popupAddForm.reset();
+  resetValidation(modalWindow);
+  openPopup(modalWindow);
+}
+
+function openPopup(modalWindow) {
+  modalWindow.classList.add("popup_opened");
+  document.addEventListener("keydown",  closePopupEsc);
+  modalWindow.addEventListener("click", closePopupOverlay);
+}
+
+function closePopup(modalWindow) {
   modalWindow.classList.remove("popup_opened");
+  document.removeEventListener("keydown", closePopupEsc);
+  modalWindow.removeEventListener("click", closePopupOverlay);
 }
 
-const resetValidation = () => {
-  const allSpan = document.querySelectorAll(".popup__input");
-  allSpan.forEach((element) => {
-    element.classList.remove("popup__input_error_visible");
-    element.textContent = '';
-  })
-  const allInputs = document.querySelectorAll(".popup__info");
-  allInputs.forEach((element) => {
-    element.classList.remove("popup__input_type_error");
-  })
+const settingProfileInfo = () => {
+  popupName.value = profileTitle.textContent;
+  popupJob.value = profileSubtitle.textContent;
 }
 
-editButton.addEventListener("click", () => popupOpen(popupEditProfile));
-addButton.addEventListener("click", () => popupOpen(popupEditAdd));
+editButton.addEventListener("click", () => openProfilePopup(popupEditProfile));
+addButton.addEventListener("click", () => openAddPopup(popupEditAdd));
 
-closeButtonProfile.addEventListener("click", () => popupClose(popupEditProfile));
-closeButtonPopup.addEventListener("click", () => popupClose(popupImg));
-closeButtonAddImg.addEventListener("click", () => popupClose(popupEditAdd));
+closeButtonProfile.addEventListener("click", () => closePopup(popupEditProfile));
+closeButtonPopup.addEventListener("click", () => closePopup(popupImg));
+closeButtonAddImg.addEventListener("click", () => closePopup(popupEditAdd));
 
-popupForm.addEventListener("submit", () => saveProfInf(popupName, popupJob, event));
-popupAddForm.addEventListener("submit", () => popupAddImg(popupLinkImg, popupTitleImg, event));
+popupForm.addEventListener("submit", () => saveProfInf(popupName, popupJob));
+popupAddForm.addEventListener("submit", () => addPopupImg(popupLinkImg, popupTitleImg));
 
+settingProfileInfo();
+
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__info',
+  submitButtonSelector: '.popup__save-button',
+  inactiveButtonClass: 'popup__save-button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input_error_visible'
+});

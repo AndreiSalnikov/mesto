@@ -7,7 +7,7 @@
   <title>Место</title>
 </head>
 <body class="page-root">
-  <div class="popup" id="popupShowImg">
+  <div class="popup popup_overlay_black" id="popupShowImg">
   <figure class="popup__figure">
     <button type="button" class="popup__close-button" id="closeButton-popupImg"></button>
     <img class="popup__img">
@@ -23,7 +23,7 @@
         <span class="popup__input" id="inputProfileName-error"></span>
         <input type="text" id="inputProfileJob" name="jobInput" placeholder="профессия" class="popup__info popup__info_text_job" minlength="2" maxlength="200" required>
         <span class="popup__input" id="inputProfileJob-error"></span>
-        <button type="submit" class="popup__save-button" disabled>Сохранить</button>
+        <button type="submit" id ="submitEditButton" class="popup__save-button">Сохранить</button>
       </form>
     </div>
   </div>
@@ -36,7 +36,7 @@
        <span class="popup__input" id="inputAddPlace-error"></span>
        <input type="url"  id="inputAddLink" name="jobInput" placeholder="Ссылка на картинку" class="popup__info popup__info_text_link" required>
        <span class="popup__input" id="inputAddLink-error"></span>
-       <button type="submit" class="popup__save-button" disabled>Добавить</button>
+       <button type="submit" id ="submitAddButton" class="popup__save-button">Создать</button>
      </form>
     </div>
   </div>
