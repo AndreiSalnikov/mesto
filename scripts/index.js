@@ -13,13 +13,10 @@ const popupImg = document.querySelector("#popupShowImg");
 const popupEditProfile = document.querySelector("#popupEditProfile");
 const popupEditAdd = document.querySelector("#popupAddCard");
 const template = document.querySelector("#photoGrid");
-const closeButtonProfile = document.querySelector("#closeButton-EditProfile");
-const closeButtonPopup = document.querySelector("#closeButton-popupImg");
-const closeButtonAddImg = document.querySelector("#closeButton-AddCard");
 const figcaption = document.querySelector("figcaption");
 const imgPopup = document.querySelector(".popup__img");
 const submitAddButton = document.querySelector("#submitAddButton");
-const submitEditButton = document.querySelector("#submitEditButton");
+
 function createCard(src, title) {
   const clone = template.content.cloneNode(true);
   const templateImg = clone.querySelector(".item__img");
@@ -73,9 +70,8 @@ function eventListeners(clone, src, title) {
 }
 
 const closePopupOverlay = (event) => {
-  if (event.target.id === popupImg.id || event.target.id === popupEditProfile.id || event.target.id === popupEditAdd.id) {
-    const openedPopup = document.querySelector('.popup_opened');
-    closePopup(openedPopup);
+  if (event.target.classList.contains('popup') || event.target.classList.contains('popup__close-button')) {
+    closePopup(event.currentTarget);
   }
 }
 
@@ -89,26 +85,24 @@ const closePopupEsc = (event) => {
 const openProfilePopup = (modalWindow) => {
   popupName.value = profileTitle.textContent;
   popupJob.value = profileSubtitle.textContent;
-  resetValidation(modalWindow);
   openPopup(modalWindow);
 }
 
 const openAddPopup = (modalWindow) => {
   popupAddForm.reset();
-  resetValidation(modalWindow);
   openPopup(modalWindow);
 }
 
 function openPopup(modalWindow) {
   modalWindow.classList.add("popup_opened");
-  document.addEventListener("keydown",  closePopupEsc);
-  modalWindow.addEventListener("click", closePopupOverlay);
+  document.addEventListener("keydown", closePopupEsc);
+  modalWindow.addEventListener("mousedown", closePopupOverlay);
 }
 
 function closePopup(modalWindow) {
   modalWindow.classList.remove("popup_opened");
   document.removeEventListener("keydown", closePopupEsc);
-  modalWindow.removeEventListener("click", closePopupOverlay);
+  modalWindow.removeEventListener("mousedown", closePopupOverlay);
 }
 
 const settingProfileInfo = () => {
@@ -118,14 +112,9 @@ const settingProfileInfo = () => {
 
 editButton.addEventListener("click", () => openProfilePopup(popupEditProfile));
 addButton.addEventListener("click", () => openAddPopup(popupEditAdd));
-
-closeButtonProfile.addEventListener("click", () => closePopup(popupEditProfile));
-closeButtonPopup.addEventListener("click", () => closePopup(popupImg));
-closeButtonAddImg.addEventListener("click", () => closePopup(popupEditAdd));
-
 popupForm.addEventListener("submit", () => saveProfInf(popupName, popupJob));
 popupAddForm.addEventListener("submit", () => addPopupImg(popupLinkImg, popupTitleImg));
-
+// спасибо за ваше ревью, мне очень понравилось!
 settingProfileInfo();
 
 enableValidation({

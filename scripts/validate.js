@@ -50,22 +50,6 @@ const setEventListeners = (formElement, settingsValidation) => {
   });
 };
 
-const resetValidation = (modalWindow) => {
-  const allSpan = document.querySelectorAll(".popup__input");
-  allSpan.forEach((element) => {
-    element.classList.remove("popup__input_error_visible");
-  })
-  const allInputs = document.querySelectorAll(".popup__info");
-  allInputs.forEach((element) => {
-    element.classList.remove("popup__input_type_error");
-  })
-
-  if (modalWindow.id === popupEditProfile.id) {
-    submitEditButton.classList.remove("popup__save-button_disabled");
-    submitEditButton.disabled = false;
-  }
-}
-
 const enableValidation = (settingsValidation) => {
   const formList = Array.from(document.querySelectorAll(settingsValidation.formSelector));
   formList.forEach((formElement) => {
