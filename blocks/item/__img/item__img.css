@@ -4,5 +4,9 @@
   max-height: 282px;
   object-fit:cover;
   display: block;
-  border-radius: 10px 10px 0px 0px;
+  border-radius: 10px 10px 0 0;
+}
+
+.item__img:hover {
+  cursor: pointer;
 }
