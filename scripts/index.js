@@ -1,3 +1,15 @@
+import Card from '../scripts/Card.js';
+import FormValidator from "./FormValidator.js";
+import {initialCards} from "./constants.js";
+
+const settingValidation =
+  {
+  inputSelector: '.popup__info',
+  submitButtonSelector: '.popup__save-button',
+  inactiveButtonClass: 'popup__save-button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input_error_visible'
+  }
 const editButton = document.querySelector(".profile__edit-button");
 const popupAddForm = document.querySelector("#popupAddForm");
 const popupForm = document.querySelector("#popupEditForm");
@@ -9,29 +21,36 @@ const profileTitle = document.querySelector(".profile__title");
 const profileSubtitle = document.querySelector(".profile__subtitle");
 const photoGrid = document.querySelector(".photo-grid");
 const addButton = document.querySelector(".profile__add-button");
-const popupImg = document.querySelector("#popupShowImg");
 const popupEditProfile = document.querySelector("#popupEditProfile");
 const popupEditAdd = document.querySelector("#popupAddCard");
-const template = document.querySelector("#photoGrid");
-const figcaption = document.querySelector("figcaption");
-const imgPopup = document.querySelector(".popup__img");
 const submitAddButton = document.querySelector("#submitAddButton");
 
+const settingProfileInfo = () => {
+  popupName.value = profileTitle.textContent;
+  popupJob.value = profileSubtitle.textContent;
+}
+
+function onValidation() {
+  const validateEditForm = new FormValidator(settingValidation, '#popupEditForm');
+  validateEditForm.enableValidation();
+  const validateAddForm = new FormValidator(settingValidation, '#popupAddForm');
+  validateAddForm.enableValidation();
+
+}
+settingProfileInfo();
+
+onValidation();
+
+
 function createCard(src, title) {
-  const clone = template.content.cloneNode(true);
-  const templateImg = clone.querySelector(".item__img");
-  const templateText = clone.querySelector(".item__text");
-  templateImg.src = src;
-  templateImg.alt = title;
-  templateText.textContent = title;
-  eventListeners(clone, src, title);
-  return clone;
+  const newCard = new Card({src,title},'#photoGrid')
+  return newCard.generateCard();
 }
 
 initialCards.forEach(renderCard);
 
 function renderCard(card) {
-  photoGrid.prepend(createCard(card.link, card.name));
+   photoGrid.prepend(createCard(card.link, card.name));
 }
 
 function saveProfInf(name, job) {
@@ -54,21 +73,6 @@ function addPopupImg(name, link) {
   popupAddForm.reset();
 }
 
-function eventListeners(clone, src, title) {
-  clone.querySelector(".item__icon").addEventListener("click", (e) => {
-    e.target.classList.toggle("item__icon_active");
-  });
-  clone.querySelector(".item__delete-img").addEventListener("click", (e) => {
-    e.target.closest(".item").remove();
-  });
-  clone.querySelector(".item__img").addEventListener("click", (e) => {
-    imgPopup.setAttribute("src", src);
-    imgPopup.setAttribute("alt", title);
-    figcaption.textContent = title;
-    openPopup(popupImg);
-  });
-}
-
 const closePopupOverlay = (event) => {
   if (event.target.classList.contains('popup') || event.target.classList.contains('popup__close-button')) {
     closePopup(event.currentTarget);
@@ -88,12 +92,12 @@ const openProfilePopup = (modalWindow) => {
   openPopup(modalWindow);
 }
 
-const openAddPopup = (modalWindow) => {
+ const openAddPopup = (modalWindow) => {
   popupAddForm.reset();
   openPopup(modalWindow);
 }
 
-function openPopup(modalWindow) {
+export function openPopup(modalWindow) {
   modalWindow.classList.add("popup_opened");
   document.addEventListener("keydown", closePopupEsc);
   modalWindow.addEventListener("mousedown", closePopupOverlay);
@@ -105,23 +109,7 @@ function closePopup(modalWindow) {
   modalWindow.removeEventListener("mousedown", closePopupOverlay);
 }
 
-const settingProfileInfo = () => {
-  popupName.value = profileTitle.textContent;
-  popupJob.value = profileSubtitle.textContent;
-}
-
 editButton.addEventListener("click", () => openProfilePopup(popupEditProfile));
 addButton.addEventListener("click", () => openAddPopup(popupEditAdd));
 popupForm.addEventListener("submit", () => saveProfInf(popupName, popupJob));
 popupAddForm.addEventListener("submit", () => addPopupImg(popupLinkImg, popupTitleImg));
-// спасибо за ваше ревью, мне очень понравилось!
-settingProfileInfo();
-
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__info',
-  submitButtonSelector: '.popup__save-button',
-  inactiveButtonClass: 'popup__save-button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input_error_visible'
-});
