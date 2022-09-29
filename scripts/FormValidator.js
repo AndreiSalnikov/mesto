@@ -1,4 +1,4 @@
-export default class FormValidator {
+export class FormValidator {
   constructor(settingsValidation, form) {
     this._formSelector = document.querySelector(form);
     this._settingsValidation = settingsValidation;
@@ -19,10 +19,14 @@ export default class FormValidator {
     });
   }
 
+  disableSubmitButton = (button) => {
+    button.classList.add('popup__save-button_disabled');
+    button.disabled = true;
+  }
+
   _toggleButtonState() {
     if (this._hasInvalidInput()) {
-      this._buttonElement.classList.add(this._settingsValidation.inactiveButtonClass);
-      this._buttonElement.disabled = true;
+      this.disableSubmitButton(this._buttonElement);
     } else {
       this._buttonElement.classList.remove(this._settingsValidation.inactiveButtonClass);
       this._buttonElement.disabled = false;
@@ -60,4 +64,4 @@ export default class FormValidator {
     });
     this._setEventListeners();
   }
-};
+}

@@ -6,27 +6,34 @@ import { openPopup } from './index.js'
 export default class Card {
   constructor(data,templateSelector) {
     this._templateSelector = templateSelector;
-    this._src = data.src;
-    this._title = data.title;
+    this._src = data.link;
+    this._title = data.name;
     }
 
   _getTemplate() {
     return document.querySelector(this._templateSelector).content.querySelector(".item").cloneNode(true);
   }
 
-  _eventListeners() {
-    this._element.querySelector(".item__icon").addEventListener("click", (e) => {
-      e.target.classList.toggle("item__icon_active");
-    });
-    this._element.querySelector(".item__delete-img").addEventListener("click", (e) => {
-      e.target.closest(".item").remove();
-    });
-    this._element.querySelector(".item__img").addEventListener("click", () => {
-      imgPopup.setAttribute("src", this._src);
-      imgPopup.setAttribute("alt", this._title);
-      figcaption.textContent = this._title;
-      openPopup(popupImg);
-    });
+  _setLike() {
+    this._element.querySelector(".item__icon").classList.toggle("item__icon_active");
+  }
+
+  _deleteCard() {
+    this._element.closest(".item").remove();
+    this._element = null;
+  }
+
+  _openImagePopup() {
+    imgPopup.setAttribute("src", this._src);
+    imgPopup.setAttribute("alt", this._title);
+    figcaption.textContent = this._title;
+    openPopup(popupImg);
+  }
+
+  _setEventListeners() {
+    this._element.querySelector(".item__icon").addEventListener("click", () => (this._setLike(this._element)));
+    this._element.querySelector(".item__delete-img").addEventListener("click", () => (this._deleteCard(this._element)));
+    this._element.querySelector(".item__img").addEventListener("click", () => (this._openImagePopup(this._element)));
   }
 
   generateCard() {
@@ -36,8 +43,7 @@ export default class Card {
     templateImg.src = this._src;
     templateImg.alt = this._title;
     templateText.textContent = this._title;
-    this._eventListeners();
+    this._setEventListeners();
     return this._element;
   }
-
 }
