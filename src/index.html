@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./pages/index.css">
+<!--  <link rel="stylesheet" href="./pages/index.css">-->
   <title>Место</title>
-  <script src="scripts/constants.js"></script>
 </head>
 <body class="page-root">
   <div class="popup popup_overlay_black" id="popupShowImg">
@@ -33,21 +32,21 @@
      <button type="button" id="closeButton-AddCard" class="popup__close-button"></button>
      <h3 class="popup__title">Новое место</h3>
      <form name="edit-form" id="popupAddForm" class="popup__form" novalidate>
-       <input type="text" id="inputAddPlace" name="nameInput" placeholder="Название" class="popup__info popup__info_text_title" minlength="2" maxlength="30" required>
+       <input type="text" id="inputAddPlace" name="name" placeholder="Название" class="popup__info popup__info_text_title" minlength="2" maxlength="30" required>
        <span class="popup__input" id="inputAddPlace-error"></span>
-       <input type="url"  id="inputAddLink" name="jobInput" placeholder="Ссылка на картинку" class="popup__info popup__info_text_link" required>
+       <input type="url"  id="inputAddLink" name="link" placeholder="Ссылка на картинку" class="popup__info popup__info_text_link" required>
        <span class="popup__input" id="inputAddLink-error"></span>
        <button type="submit" id ="submitAddButton" class="popup__save-button">Создать</button>
      </form>
     </div>
   </div>
   <header class="header">
-    <img src="./images/Logo.svg" class="header__logo" alt="логотип страницы">
+    <img src="<%=require('./images/Logo.svg')%>" class="header__logo" alt="логотип страницы">
   </header>
   <main>
     <section class="profile">
       <div class="profile__left-group">
-        <img src="./images/avatar.png" alt="изображение профиля" class="profile__avatar">
+        <img src="<%=require('./images/avatar.png')%>" alt="изображение профиля" class="profile__avatar">
         <div class="profile__info">
           <h1 class="profile__title">Жак-Ив Кусто</h1>
           <button type="button" aria-label="редактировать профиль" class="profile__edit-button"></button>
@@ -73,6 +72,5 @@
   <footer class="footer">
     <p class="footer__copyright">© 2020 Mesto Russia</p>
   </footer>
-  <script type="module" src="./scripts/index.js"></script>
 </body>
 </html>
