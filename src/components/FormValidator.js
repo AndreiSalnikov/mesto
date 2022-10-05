@@ -1,6 +1,6 @@
 export class FormValidator {
-  constructor(settingsValidation, form) {
-    this._formSelector = document.querySelector(form);
+  constructor(settingsValidation, formSelector) {
+    this._formSelector = document.querySelector(formSelector);
     this._settingsValidation = settingsValidation;
     this._buttonElement = this._formSelector.querySelector(this._settingsValidation.submitButtonSelector);
     this._inputList = Array.from(this._formSelector.querySelectorAll(this._settingsValidation.inputSelector));
@@ -20,7 +20,7 @@ export class FormValidator {
   }
 
   disableSubmitButton = (button) => {
-    button.classList.add('popup__save-button_disabled');
+    button.classList.add(this._settingsValidation.inactiveButtonClass);
     button.disabled = true;
   }
 
@@ -63,5 +63,13 @@ export class FormValidator {
       evt.preventDefault();
     });
     this._setEventListeners();
+  }
+
+  resetValidation() {
+    this._toggleButtonState();
+    this._inputList.forEach((inputElement) => {
+      this._hideInputError(inputElement);
+    });
+
   }
 }

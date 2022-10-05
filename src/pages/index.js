@@ -7,75 +7,59 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 
-
-const popupImg = document.querySelector("#popupShowImg");
-const popupName = document.querySelector(".popup__info_text_name");
-const popupJob = document.querySelector(".popup__info_text_job");
-const popupEditProfile = document.querySelector("#popupEditProfile");
-const popupEditAdd = document.querySelector("#popupAddCard");
-const profileTitle = document.querySelector(".profile__title");
-const profileSubtitle = document.querySelector(".profile__subtitle");
 const buttonEdit = document.querySelector(".profile__edit-button");
 const buttonAdd = document.querySelector(".profile__add-button");
 const buttonSubmitAdd = document.querySelector("#submitAddButton");
 
 const ValidatorEditForm = new FormValidator(settingValidation, '#popupEditForm');
 const ValidatorAddForm = new FormValidator(settingValidation, '#popupAddForm');
-const userInformation = new UserInfo({userName: profileTitle, userAbout: profileSubtitle});
-const popupImage = new PopupWithImage(popupImg);
+const userInformation = new UserInfo({userName: ".profile__title", userAbout: ".profile__subtitle"});
+const popupImage = new PopupWithImage("#popupShowImg");
 
-const popupWithEditForm = new PopupWithForm(popupEditProfile, {
+const defaultCardList = new Section({
+  items: initialCards, renderer: (item) => {
+    defaultCardList.addItem(createCard(item));
+  }
+}, ".photo-grid");
+
+const popupWithEditForm = new PopupWithForm("#popupEditProfile", {
   handleSubmitForm: (inputs) => {
-    userInformation.setUserInfo({name: inputs[0].nameInput, about: inputs[0].jobInput});
+    userInformation.setUserInfo({name: inputs[0].name, about: inputs[0].about});
     popupWithEditForm.close();
   }
 });
 
-const popupWithAddForm = new PopupWithForm(popupEditAdd, {
+const popupWithAddForm = new PopupWithForm("#popupAddCard", {
   handleSubmitForm: (inputs) => {
-    const newCardRender = new Section({
-      items: inputs, renderer: (item) => {
-        const newCard = new Card(item, '#photoGrid', handleCardClick);
-        const cardElement = newCard.generateCard();
-        newCardRender.addItem(cardElement);
-      }
-    }, ".photo-grid");
-    newCardRender.renderItems();
+    defaultCardList.addItem(createCard(inputs[0]));
     ValidatorAddForm.disableSubmitButton(buttonSubmitAdd);
-    popupWithAddForm.close(popupEditAdd);
+    popupWithAddForm.close("#popupAddCard");
   }
-});
+})
 
-const defaultCardList = new Section({
-  items: initialCards, renderer: (item) => {
-    const newCard = new Card(item, '#photoGrid', handleCardClick);
-    const cardElement = newCard.generateCard();
-    defaultCardList.addItem(cardElement);
-  }
-}, ".photo-grid");
-
-const settingProfileInfo = () => {
-  popupName.value = userInformation.getUserInfo().name;
-  popupJob.value = userInformation.getUserInfo().about;
+function createCard(item) {
+  const newCard = new Card(item, '#photoGrid', handleCardClick);
+  return newCard.generateCard();
 }
+
 
 function handleCardClick(link, name) {
   popupImage.open(link, name);
 }
 
 const openProfilePopup = () => {
-  settingProfileInfo();
+  popupWithEditForm.setInputValues(userInformation.getUserInfo());
+  ValidatorEditForm.resetValidation();
   popupWithEditForm.open();
 }
 
 const openAddPopup = () => {
+  ValidatorAddForm.resetValidation();
   popupWithAddForm.open();
 }
 
 buttonEdit.addEventListener("click", () => openProfilePopup());
 buttonAdd.addEventListener("click", () => openAddPopup());
-
-settingProfileInfo();
 
 popupImage.setEventListeners();
 popupWithEditForm.setEventListeners();
