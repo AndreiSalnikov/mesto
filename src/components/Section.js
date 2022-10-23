@@ -5,8 +5,11 @@ export default class Section {
     this._renderer = renderer;
   }
 
-  addItem(element) {
-    this._container.prepend(element);
+  addItem(element,reverse) {
+    if(reverse)
+      this._container.prepend(element);
+    else
+    this._container.append(element);
   }
 
   renderItems() {
