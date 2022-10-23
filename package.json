@@ -29,12 +29,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Chijik666/mesto.git"
+    "url": "git+https://github.com/andreisalnikov/mesto.git"
   },
   "author": "Andrei Salnikov",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Chijik666/mesto/issues"
+    "url": "https://github.com/andreisalnikov/mesto/issues"
   },
-  "homepage": "https://github.com/Chijik666/mesto#readme"
+  "homepage": "https://github.com/andreisalnikov/mesto#readme"
 }
