@@ -5,21 +5,26 @@ export const buttonEditAvatar = document.querySelector(".profile__avatar")
 export const userPath = "/users/me";
 export const cardsPath = "/cards";
 export const settingValidation = {
-  inputSelector: '.popup__info',
-  submitButtonSelector: '.popup__save-button',
-  inactiveButtonClass: 'popup__save-button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input_error_visible'
+    inputSelector: '.popup__info',
+    submitButtonSelector: '.popup__save-button',
+    inactiveButtonClass: 'popup__save-button_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__input_error_visible'
 }
 export const settingUserApi = {
-  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-52", headers: {
-    authorization: '16231cdf-2d24-4740-acd1-51d355ac1755', 'Content-Type': 'application/json'
-  }
+    baseUrl: "https://mesto.nomoreparties.co/v1/cohort-52", headers: {
+        authorization: '16231cdf-2d24-4740-acd1-51d355ac1755', 'Content-Type': 'application/json'
+    }
 }
 
-export function loading(button,isLoading) {
-        if(isLoading){
-            button.textContent = "Сохранение...";
-        }
-        else  button.textContent = "Сохранить"
-    }
+export function loadingSave(button, isLoading) {
+    if (isLoading) {
+        button.textContent = "Сохранение...";
+    } else button.textContent = "Сохранить"
+}
+
+export function loadingDelete(button, isLoading) {
+    if (isLoading) {
+        button.textContent = "Удаление...";
+    } else button.textContent = "Да"
+}

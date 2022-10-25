@@ -10,7 +10,8 @@ import {
     buttonEditAvatar,
     userPath,
     cardsPath,
-    loading
+    loadingSave,
+    loadingDelete
 } from "../utils/utils.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
@@ -55,22 +56,22 @@ const popupImage = new PopupWithImage("#popupShowImg");
 const popupWithConfirm = new PopupWithConfirmation("#popupDelete", {
     handleCardDelete: (id, element, button) => {
         api.deleteServerCard(id, cardsPath).then(() => {
-            loading(button, true);
+            loadingDelete(button, true);
             element.remove();
             popupWithConfirm.close()
         }).catch((err) => console.log(err)).finally(() => {
-            loading(button, false)
+            loadingDelete(button, false)
         });
     }
 });
 
 const popupWithEditForm = new PopupWithForm("#popupEditProfile", {
     handleSubmitForm: (inputs, button) => {
-        loading(button, true);
+        loadingSave(button, true);
         api.editServerProfileInfo({name: inputs[0].name, about: inputs[0].about}, userPath).then(() => {
             userInformation.setUserInfo({name: inputs[0].name, about: inputs[0].about})
         }).catch((err) => console.log(err)).finally(() => {
-            loading(button, false)
+            loadingSave(button, false)
         });
         popupWithEditForm.close();
     }
@@ -78,13 +79,13 @@ const popupWithEditForm = new PopupWithForm("#popupEditProfile", {
 
 const popupWithEditAvatarForm = new PopupWithForm("#popupEditAvatar", {
     handleSubmitForm: (inputs, button) => {
-        loading(button, true);
+        loadingSave(button, true);
         api.setServerAvatar({avatar: inputs[0].link}, userPath).then(() => {
                 userInformation.setAvatar({avatar: inputs[0].link})
                 popupWithEditAvatarForm.close();
             }
         ).catch((err) => console.log(err)).finally(() => {
-            loading(button, false)
+            loadingSave(button, false)
         });
     }
 });
@@ -92,13 +93,13 @@ const popupWithEditAvatarForm = new PopupWithForm("#popupEditAvatar", {
 const popupWithAddForm = new PopupWithForm("#popupAddCard", {
     handleSubmitForm: (inputs, button) => {
         api.addServerCard(inputs[0], cardsPath).then((data) => {
-            loading(button, true);
+            loadingSave(button, true);
             data.userId = data.owner._id;
             defaultCardList.addItem(createCard(data), true);
             ValidatorAddForm.disableSubmitButton(buttonSubmitAdd);
             popupWithAddForm.close("#popupAddCard");
         }).catch((err) => console.log(err)).finally(() => {
-            loading(button, false)
+            loadingSave(button, false)
         });
     }
 })
