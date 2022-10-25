@@ -20,7 +20,7 @@ export default class Card {
 
   _setEventListeners() {
     this._likeButton = this._element.querySelector(".item__icon");
-    this._likeButton.addEventListener("click", () => (this._handleLikeClick(this._likeButton,this._idCard,this._likePosition,this._likes)));
+    this._likeButton.addEventListener("click", () => (this._handleLikeClick(this._likeButton,this._idCard,this._likePosition)));
    this._templateImg.addEventListener("click", () => (this._handleCardClick(this._src, this._title)));
     if(this._idOwner === this._userId)
     {

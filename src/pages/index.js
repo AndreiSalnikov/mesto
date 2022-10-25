@@ -117,13 +117,13 @@ ValidatorEditForm.enableValidation();
 ValidatorAddForm.enableValidation();
 ValidatorEditAvatarForm.enableValidation();
 
-function handleLikeClick(button, cardId, counter, likes) {
+function handleLikeClick(button, cardId, counter) {
     button.classList.toggle("item__icon_active");
     if (button.classList.contains('item__icon_active')) {
-        api.setServerLike(cardId).then(counter.textContent = likes + 1).catch((err)=>console.log(err));
-    } else api.removeServerLike(cardId).then(() => {
-        counter.textContent = likes - 1;
-    }).catch((err)=>console.log(err));
+        api.setServerLike(cardId).then(()=>counter.textContent = Number(counter.textContent) + 1).catch((err)=>console.log(err));
+    } else api.removeServerLike(cardId).then(() =>
+        counter.textContent = Number(counter.textContent) - 1
+    ).catch((err)=>console.log(err));
 }
 
 
