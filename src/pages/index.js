@@ -9,8 +9,9 @@ import {
     buttonSubmitAdd,
     buttonEditAvatar,
     userPath,
-    cardsPath
-} from "../components/constants.js";
+    cardsPath,
+    loading
+} from "../utils/utils.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
@@ -27,76 +28,78 @@ const userInformation = new UserInfo({
     avatar: ".profile__avatar-image"
 });
 
+const defaultCardList = new Section({
+    renderer: (item, userID) => {
+        item.likes.forEach((people) => {
+                if (people._id === userID) {
+                    item.isLiked = true;
+                }
+            }
+        )
+
+        item.userId = userID;
+        defaultCardList.addItem(createCard(item));
+    }
+}, ".photo-grid");
+
+
 Promise.all([api.getServerInfo(userPath), api.getServerInfo(cardsPath)])
     .then(([userData, cards]) => {
         userInformation.setUserInfo({name: userData.name, about: userData.about})
         userInformation.setAvatar({avatar: userData.avatar});
-        const defaultCardList = new Section({
-            items: cards, renderer: (item) => {
-                item.likes.forEach((people) => {
-                        if (people._id === userData._id) {
-                            item.isLiked = true;
-                        }
-                    }
-                )
-
-                item.userId = userData._id;
-                defaultCardList.addItem(createCard(item));
-            }
-        }, ".photo-grid");
-        defaultCardList.renderItems();
-    })
+        defaultCardList.renderItems(cards, userData._id);
+    }).catch((err) => console.log(err))
 
 const popupImage = new PopupWithImage("#popupShowImg");
 
 const popupWithConfirm = new PopupWithConfirmation("#popupDelete", {
     handleCardDelete: (id, element, button) => {
-        api.deleteServerCard(id, cardsPath, button).then(() => {
+        api.deleteServerCard(id, cardsPath).then(() => {
+            loading(button, true);
             element.remove();
             popupWithConfirm.close()
-        })
+        }).catch((err) => console.log(err)).finally(() => {
+            loading(button, false)
+        });
     }
 });
 
-
 const popupWithEditForm = new PopupWithForm("#popupEditProfile", {
     handleSubmitForm: (inputs, button) => {
-        api.editServerProfileInfo({name: inputs[0].name, about: inputs[0].about}, userPath, button).then(() => {
+        loading(button, true);
+        api.editServerProfileInfo({name: inputs[0].name, about: inputs[0].about}, userPath).then(() => {
             userInformation.setUserInfo({name: inputs[0].name, about: inputs[0].about})
-        })
+        }).catch((err) => console.log(err)).finally(() => {
+            loading(button, false)
+        });
         popupWithEditForm.close();
     }
 });
 
 const popupWithEditAvatarForm = new PopupWithForm("#popupEditAvatar", {
     handleSubmitForm: (inputs, button) => {
-        api.setServerAvatar({avatar: inputs[0].link}, userPath, button).then(() => {
+        loading(button, true);
+        api.setServerAvatar({avatar: inputs[0].link}, userPath).then(() => {
                 userInformation.setAvatar({avatar: inputs[0].link})
                 popupWithEditAvatarForm.close();
             }
-        );
+        ).catch((err) => console.log(err)).finally(() => {
+            loading(button, false)
+        });
     }
 });
 
 const popupWithAddForm = new PopupWithForm("#popupAddCard", {
     handleSubmitForm: (inputs, button) => {
-        const newCard = new Section({
-            items: inputs, renderer: () => {
-            }
-        }, ".photo-grid");
-        api.addServerCard(inputs[0], cardsPath, button);
-        api.getServerInfo(cardsPath).then((res) => {
-            inputs[0]._id = res[0]._id;
-            inputs[0].likes = res[0].likes;
-            inputs[0].owner = {
-                _id: res[0].owner._id
-            };
-            inputs[0].userId = res[0].owner._id;
-            newCard.addItem(createCard(inputs[0]), true);
+        api.addServerCard(inputs[0], cardsPath).then((data) => {
+            loading(button, true);
+            data.userId = data.owner._id;
+            defaultCardList.addItem(createCard(data), true);
             ValidatorAddForm.disableSubmitButton(buttonSubmitAdd);
             popupWithAddForm.close("#popupAddCard");
-        })
-
+        }).catch((err) => console.log(err)).finally(() => {
+            loading(button, false)
+        });
     }
 })
 
@@ -117,11 +120,12 @@ ValidatorEditAvatarForm.enableValidation();
 function handleLikeClick(button, cardId, counter, likes) {
     button.classList.toggle("item__icon_active");
     if (button.classList.contains('item__icon_active')) {
-        api.setServerLike(cardId).then(counter.textContent = likes + 1);
+        api.setServerLike(cardId).then(counter.textContent = likes + 1).catch((err)=>console.log(err));
     } else api.removeServerLike(cardId).then(() => {
         counter.textContent = likes - 1;
-    });
+    }).catch((err)=>console.log(err));
 }
+
 
 function createCard(item) {
     const newCard = new Card(item, '#photoGrid', handleCardClick, handleDeleteButtonClick, handleLikeClick);
