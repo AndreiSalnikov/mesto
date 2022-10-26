@@ -17,15 +17,3 @@ export const settingUserApi = {
     authorization: '16231cdf-2d24-4740-acd1-51d355ac1755', 'Content-Type': 'application/json'
   }
 }
-
-export function loadingSave(button, isLoading) {
-  if (isLoading) {
-    button.textContent = "Сохранение...";
-  } else button.textContent = "Сохранить"
-}
-
-export function loadingDelete(button, isLoading) {
-  if (isLoading) {
-    button.textContent = "Удаление...";
-  } else button.textContent = "Да"
-}
