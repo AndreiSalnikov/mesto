@@ -13,7 +13,6 @@ import PopupWithConfirmation from "../components/PopupWithConfirmation";
 
 const api = new Api(settingUserApi);
 
-
 const userInformation = new UserInfo({
   userName: ".profile__title", userAbout: ".profile__subtitle", avatar: ".profile__avatar-image"
 });
@@ -38,28 +37,28 @@ const popupImage = new PopupWithImage("#popupShowImg");
 const popupWithConfirm = new PopupWithConfirmation("#popupDelete", {
   handleCardDelete: (id, element) => api.deleteServerCard(id, cardsPath).then(() => {
     element.remove();
-  })
+  }).catch((err) => console.log(err))
 });
 
 const popupWithEditForm = new PopupWithForm("#popupEditProfile", {
   handleSubmitForm: (inputs) => api.editServerProfileInfo({
     name: inputs.name, about: inputs.about
-  }, userPath).then(() => userInformation.setUserInfo({name: inputs.name, about: inputs.about}))
+  }, userPath).then(() => userInformation.setUserInfo({
+    name: inputs.name, about: inputs.about
+  })).catch((err) => console.log(err))
 });
 
 const popupWithEditAvatarForm = new PopupWithForm("#popupEditAvatar", {
   handleSubmitForm: (inputs) => api.setServerAvatar({avatar: inputs.link}, userPath).then(() => {
     userInformation.setAvatar({avatar: inputs.link})
-    popupWithEditAvatarForm.close();
-  })
+  }).catch((err) => console.log(err))
 });
 
 const popupWithAddForm = new PopupWithForm("#popupAddCard", {
   handleSubmitForm: (inputs) => api.addServerCard(inputs, cardsPath).then((data) => {
     data.userId = data.owner._id;
     defaultCardList.addItem(createCard(data), true);
-    popupWithAddForm.close();
-  })
+  }).catch((err) => console.log(err))
 })
 
 popupWithConfirm.setEventListeners();
@@ -69,7 +68,7 @@ popupWithAddForm.setEventListeners();
 popupWithEditAvatarForm.setEventListeners();
 
 function handleLikeClick(card) {
-  if (!card._isLiked) {
+  if (!card.isLiked) {
     api.setServerLike(card._idCard)
       .then((res) => {
         card.setLike(res)

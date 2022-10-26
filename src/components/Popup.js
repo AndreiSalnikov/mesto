@@ -20,13 +20,13 @@ export default class Popup {
   }
 
   _renderLoading(isLoading, loadingText = 'Сохранение...') {
+    if (!this._submitButton) return;
     if (isLoading) {
       this._submitButton.textContent = loadingText;
     } else {
       this._submitButton.textContent = this._submitBtnText;
     }
   }
-
 
   _closePopupOverlay = (event) => {
     if (event.target.classList.contains('popup') || event.target.classList.contains('popup__close-button')) {

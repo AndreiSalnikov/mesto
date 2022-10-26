@@ -19,7 +19,6 @@ export default class PopupWithConfirmation extends Popup {
     this._submitButton.addEventListener("click", () => {
       super._renderLoading(true, "Удаление...")
       this._handleCardDelete(this._id, this._element).then(() => this.close())
-        .catch((err) => console.log(err))
         .finally(() => {
           super._renderLoading(false)
         })
