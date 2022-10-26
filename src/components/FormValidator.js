@@ -1,6 +1,6 @@
 export class FormValidator {
-  constructor(settingsValidation, formSelector) {
-    this._form = document.querySelector(formSelector);
+  constructor(settingsValidation, formElement) {
+    this._form = formElement;
     this._settingsValidation = settingsValidation;
     this._buttonElement = this._form.querySelector(this._settingsValidation.submitButtonSelector);
     this._inputList = Array.from(this._form.querySelectorAll(this._settingsValidation.inputSelector));
@@ -19,14 +19,14 @@ export class FormValidator {
     });
   }
 
-  disableSubmitButton = (button) => {
-    button.classList.add(this._settingsValidation.inactiveButtonClass);
-    button.disabled = true;
+  disableSubmitButton = () => {
+    this._buttonElement.classList.add(this._settingsValidation.inactiveButtonClass);
+    this._buttonElement.disabled = true;
   }
 
   _toggleButtonState() {
     if (this._hasInvalidInput()) {
-      this.disableSubmitButton(this._buttonElement);
+      this.disableSubmitButton();
     } else {
       this._buttonElement.classList.remove(this._settingsValidation.inactiveButtonClass);
       this._buttonElement.disabled = false;

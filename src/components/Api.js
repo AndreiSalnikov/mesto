@@ -5,12 +5,12 @@ export default class Api {
   }
 
 
-   _checkResponse(res) {
+  _checkResponse(res) {
     if (res.ok) {
-        return res.json();
+      return res.json();
     }
     return Promise.reject(`Ошибка ${res.status}`);
-}
+  }
 
 
   _request(url, options) {
@@ -22,51 +22,44 @@ export default class Api {
   };
 
   editServerProfileInfo(data, path) {
-     return this._request(this._url + path, {
-      method: "PATCH",
-      headers: this._headers, body: JSON.stringify({
+    return this._request(this._url + path, {
+      method: "PATCH", headers: this._headers, body: JSON.stringify({
         name: data.name, about: data.about,
       })
     })
   };
 
-  addServerCard(data,path) {
+  addServerCard(data, path) {
     return this._request(this._url + path, {
-      method: "POST",
-      headers: this._headers, body: JSON.stringify({
+      method: "POST", headers: this._headers, body: JSON.stringify({
         name: data.name, link: data.link,
       })
     })
   };
 
-    deleteServerCard(id, path) {
-        return this._request(this._url + path + `/${id}`, {
-            method: "DELETE",
-            headers: this._headers,
-        })
-    };
+  deleteServerCard(id, path) {
+    return this._request(this._url + path + `/${id}`, {
+      method: "DELETE", headers: this._headers,
+    })
+  };
 
-    setServerLike(cardId) {
-        return this._request(this._url + `/cards/${cardId}`+ "/likes", {
-            method: "PUT",
-            headers: this._headers,
-        })
-    }
+  setServerLike(cardId) {
+    return this._request(this._url + `/cards/${cardId}` + "/likes", {
+      method: "PUT", headers: this._headers,
+    })
+  }
 
-    removeServerLike(cardId) {
-        return this._request(this._url + `/cards/${cardId}` + "/likes", {
-            method: "DELETE",
-            headers: this._headers,
-        })
-    }
+  removeServerLike(cardId) {
+    return this._request(this._url + `/cards/${cardId}` + "/likes", {
+      method: "DELETE", headers: this._headers,
+    })
+  }
 
-    setServerAvatar(data,path) {
-            return this._request(this._url + path + "/avatar", {
-                method: "PATCH",
-                headers: this._headers,
-                body: JSON.stringify({
-                    avatar: data.avatar,
-                }),
-            })
-    }
+  setServerAvatar(data, path) {
+    return this._request(this._url + path + "/avatar", {
+      method: "PATCH", headers: this._headers, body: JSON.stringify({
+        avatar: data.avatar,
+      }),
+    })
+  }
 }

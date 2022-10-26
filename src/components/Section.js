@@ -5,16 +5,17 @@ export default class Section {
     this._renderer = renderer;
   }
 
-  addItem(element,reverse) {
-    if(reverse)
-      this._container.prepend(element);
-    else
-    this._container.append(element);
+  addItem(element, reverse) {
+    if (reverse) {
+      this._container.prepend(element)
+    } else {
+      this._container.append(element)
+    }
   }
 
-  renderItems(cards,userID) {
+  renderItems(cards, userID) {
     cards.forEach(item => {
-      this._renderer(item,userID);
+      this._renderer(item, userID);
     });
   }
 }

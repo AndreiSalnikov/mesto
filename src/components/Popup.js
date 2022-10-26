@@ -14,19 +14,27 @@ export default class Popup {
   }
 
   _handleEscClose = (event) => {
-    if (event.key === "Escape"){
+    if (event.key === "Escape") {
       this.close();
     }
   }
 
+  _renderLoading(isLoading, loadingText = 'Сохранение...') {
+    if (isLoading) {
+      this._submitButton.textContent = loadingText;
+    } else {
+      this._submitButton.textContent = this._submitBtnText;
+    }
+  }
 
-  _closePopupOverlay =  (event)  =>{
-     if (event.target.classList.contains('popup') || event.target.classList.contains('popup__close-button')) {
-       this.close();
-     }
+
+  _closePopupOverlay = (event) => {
+    if (event.target.classList.contains('popup') || event.target.classList.contains('popup__close-button')) {
+      this.close();
+    }
   }
 
   setEventListeners() {
-      this._popup.addEventListener("mousedown", this._closePopupOverlay);
+    this._popup.addEventListener("mousedown", this._closePopupOverlay);
   }
 }

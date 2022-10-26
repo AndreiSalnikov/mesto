@@ -2,16 +2,7 @@ import './index.css';
 import Card from '../components/Card.js';
 import {FormValidator} from "../components/FormValidator.js";
 import {
-    settingValidation,
-    settingUserApi,
-    buttonEdit,
-    buttonAdd,
-    buttonSubmitAdd,
-    buttonEditAvatar,
-    userPath,
-    cardsPath,
-    loadingSave,
-    loadingDelete
+  settingValidation, settingUserApi, buttonEdit, buttonAdd, buttonEditAvatar, userPath, cardsPath, formValidators
 } from "../utils/utils.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
@@ -24,84 +15,51 @@ const api = new Api(settingUserApi);
 
 
 const userInformation = new UserInfo({
-    userName: ".profile__title",
-    userAbout: ".profile__subtitle",
-    avatar: ".profile__avatar-image"
+  userName: ".profile__title", userAbout: ".profile__subtitle", avatar: ".profile__avatar-image"
 });
 
 const defaultCardList = new Section({
-    renderer: (item, userID) => {
-        item.likes.forEach((people) => {
-                if (people._id === userID) {
-                    item.isLiked = true;
-                }
-            }
-        )
-
-        item.userId = userID;
-        defaultCardList.addItem(createCard(item));
-    }
+  renderer: (item, userID) => {
+    item.userId = userID;
+    defaultCardList.addItem(createCard(item));
+  }
 }, ".photo-grid");
 
 
 Promise.all([api.getServerInfo(userPath), api.getServerInfo(cardsPath)])
-    .then(([userData, cards]) => {
-        userInformation.setUserInfo({name: userData.name, about: userData.about})
-        userInformation.setAvatar({avatar: userData.avatar});
-        defaultCardList.renderItems(cards, userData._id);
-    }).catch((err) => console.log(err))
+  .then(([userData, cards]) => {
+    userInformation.setUserInfo({name: userData.name, about: userData.about})
+    userInformation.setAvatar({avatar: userData.avatar});
+    defaultCardList.renderItems(cards, userData._id);
+  }).catch((err) => console.log(err))
 
 const popupImage = new PopupWithImage("#popupShowImg");
 
 const popupWithConfirm = new PopupWithConfirmation("#popupDelete", {
-    handleCardDelete: (id, element, button) => {
-        api.deleteServerCard(id, cardsPath).then(() => {
-            loadingDelete(button, true);
-            element.remove();
-            popupWithConfirm.close()
-        }).catch((err) => console.log(err)).finally(() => {
-            loadingDelete(button, false)
-        });
-    }
+  handleCardDelete: (id, element) => api.deleteServerCard(id, cardsPath).then(() => {
+    element.remove();
+  })
 });
 
 const popupWithEditForm = new PopupWithForm("#popupEditProfile", {
-    handleSubmitForm: (inputs, button) => {
-        loadingSave(button, true);
-        api.editServerProfileInfo({name: inputs[0].name, about: inputs[0].about}, userPath).then(() => {
-            userInformation.setUserInfo({name: inputs[0].name, about: inputs[0].about})
-        }).catch((err) => console.log(err)).finally(() => {
-            loadingSave(button, false)
-        });
-        popupWithEditForm.close();
-    }
+  handleSubmitForm: (inputs) => api.editServerProfileInfo({
+    name: inputs.name, about: inputs.about
+  }, userPath).then(() => userInformation.setUserInfo({name: inputs.name, about: inputs.about}))
 });
 
 const popupWithEditAvatarForm = new PopupWithForm("#popupEditAvatar", {
-    handleSubmitForm: (inputs, button) => {
-        loadingSave(button, true);
-        api.setServerAvatar({avatar: inputs[0].link}, userPath).then(() => {
-                userInformation.setAvatar({avatar: inputs[0].link})
-                popupWithEditAvatarForm.close();
-            }
-        ).catch((err) => console.log(err)).finally(() => {
-            loadingSave(button, false)
-        });
-    }
+  handleSubmitForm: (inputs) => api.setServerAvatar({avatar: inputs.link}, userPath).then(() => {
+    userInformation.setAvatar({avatar: inputs.link})
+    popupWithEditAvatarForm.close();
+  })
 });
 
 const popupWithAddForm = new PopupWithForm("#popupAddCard", {
-    handleSubmitForm: (inputs, button) => {
-        api.addServerCard(inputs[0], cardsPath).then((data) => {
-            loadingSave(button, true);
-            data.userId = data.owner._id;
-            defaultCardList.addItem(createCard(data), true);
-            ValidatorAddForm.disableSubmitButton(buttonSubmitAdd);
-            popupWithAddForm.close("#popupAddCard");
-        }).catch((err) => console.log(err)).finally(() => {
-            loadingSave(button, false)
-        });
-    }
+  handleSubmitForm: (inputs) => api.addServerCard(inputs, cardsPath).then((data) => {
+    data.userId = data.owner._id;
+    defaultCardList.addItem(createCard(data), true);
+    popupWithAddForm.close();
+  })
 })
 
 popupWithConfirm.setEventListeners();
@@ -110,53 +68,68 @@ popupWithEditForm.setEventListeners();
 popupWithAddForm.setEventListeners();
 popupWithEditAvatarForm.setEventListeners();
 
-const ValidatorEditForm = new FormValidator(settingValidation, '#popupEditForm');
-const ValidatorAddForm = new FormValidator(settingValidation, '#popupAddForm');
-const ValidatorEditAvatarForm = new FormValidator(settingValidation, '#popupEditAvatar');
+function handleLikeClick(card) {
+  if (!card._isLiked) {
+    api.setServerLike(card._idCard)
+      .then((res) => {
+        card.setLike(res)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    api.removeServerLike(card._idCard)
+      .then((res) => {
+        card.removeLike(res)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
-ValidatorEditForm.enableValidation();
-ValidatorAddForm.enableValidation();
-ValidatorEditAvatarForm.enableValidation();
-
-function handleLikeClick(button, cardId, counter) {
-    button.classList.toggle("item__icon_active");
-    if (button.classList.contains('item__icon_active')) {
-        api.setServerLike(cardId).then(()=>counter.textContent = Number(counter.textContent) + 1).catch((err)=>console.log(err));
-    } else api.removeServerLike(cardId).then(() =>
-        counter.textContent = Number(counter.textContent) - 1
-    ).catch((err)=>console.log(err));
 }
 
-
 function createCard(item) {
-    const newCard = new Card(item, '#photoGrid', handleCardClick, handleDeleteButtonClick, handleLikeClick);
-    return newCard.generateCard();
+  const newCard = new Card(item, '#photoGrid', handleCardClick, handleDeleteButtonClick, handleLikeClick);
+  return newCard.generateCard();
 }
 
 function handleCardClick(link, name) {
-    popupImage.open(link, name);
+  popupImage.open(link, name);
 }
 
 function handleDeleteButtonClick(id, element) {
-    popupWithConfirm.open(id, element);
+  popupWithConfirm.open(id, element);
 }
 
 const openProfilePopup = () => {
-    popupWithEditForm.setInputValues(userInformation.getUserInfo());
-    ValidatorEditForm.resetValidation();
-    popupWithEditForm.open();
+  popupWithEditForm.setInputValues(userInformation.getUserInfo());
+  formValidators['editProfileForm'].resetValidation();
+  popupWithEditForm.open();
 }
 
 const openAddPopup = () => {
-    ValidatorAddForm.resetValidation();
-    popupWithAddForm.open();
+  formValidators['editAddForm'].resetValidation();
+  popupWithAddForm.open();
 }
 
 const openEditAvatarPopup = () => {
-    ValidatorEditAvatarForm.resetValidation();
-    popupWithEditAvatarForm.open();
+  formValidators['editAvatarForm'].resetValidation();
+  popupWithEditAvatarForm.open();
 }
 
-buttonEdit.addEventListener("click", () => openProfilePopup());
-buttonAdd.addEventListener("click", () => openAddPopup());
-buttonEditAvatar.addEventListener("click", () => openEditAvatarPopup());
+buttonEdit.addEventListener("click", openProfilePopup);
+buttonAdd.addEventListener("click", openAddPopup);
+buttonEditAvatar.addEventListener("click", openEditAvatarPopup);
+
+const enableValidation = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector))
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement)
+    const formName = formElement.getAttribute('name');
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+};
+
+enableValidation(settingValidation);
